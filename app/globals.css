@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────
+   CSS CUSTOM PROPERTIES
+   Centralised tokens so changing theme is easy.
+───────────────────────────────────────────── */
+:root {
+  --color-bg: #0a0a0a;
+  --color-road: #151515;
+  --color-trail: #d1f33a;      /* lime green trail behind the car */
+  --color-accent: #d1f33a;
+  --color-card-1: #d1f33a;     /* stat card colours */
+  --color-card-2: #6ac9ff;
+  --color-card-3: #fa7328;
+  --color-card-4: #ffffff;
+  --font-display: 'Bebas Neue', cursive;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: #fff;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  /* Prevent layout shifts caused by the scrollbar appearing */
+  scrollbar-gutter: stable;
+}
+
+/* Custom scrollbar – matches dark theme */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
