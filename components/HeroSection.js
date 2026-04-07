@@ -31,34 +31,34 @@ gsap.registerPlugin(ScrollTrigger);
 const STATS = [
   {
     id: "stat1",
-    value: "75%",
-    label: "Faster Workflows",
-    bg: "var(--color-card-1)",
-    color: "#111",
+    value: "UI/FE",
+    label: "CRAFTING CLEAN, USABLE INTERFACES",
+    bg: "#76ff63",
+    color: "#09111f",
     position: "top-[8%] right-[32%]",
   },
   {
     id: "stat2",
-    value: "90%",
-    label: "Task Completion",
-    bg: "var(--color-card-2)",
-    color: "#111",
+    value: "TOOLS",
+    label: "REACT NEXT TAILWIND GSAP",
+    bg: "#51deff",
+    color: "#09111f",
     position: "bottom-[8%] right-[38%]",
   },
   {
     id: "stat3",
-    value: "40%",
-    label: "More Productivity",
-    bg: "var(--color-card-3)",
-    color: "#111",
+    value: "10+",
+    label: "REAL WORLD UI FLOWS SHIPPED",
+    bg: "#ff9348",
+    color: "#09111f",
     position: "top-[8%] right-[10%]",
   },
   {
     id: "stat4",
-    value: "58%",
-    label: "Pick‑up Point Use",
-    bg: "var(--color-card-4)",
-    color: "#111",
+    value: "OPEN",
+    label: "INTERNSHIP READY • UI FE ROLES",
+    bg: "#ff62d6",
+    color: "#09111f",
     position: "bottom-[8%] right-[12%]",
   },
 ];
@@ -69,6 +69,18 @@ const STATS = [
 const HEADLINE = "WHY HIRE ME ?".split("");
 
 export default function HeroSection() {
+  const openHireMail = () => {
+    window.location.href = "mailto:tejshvisharma27@gmail.com";
+  };
+
+  const openPortfolio = () => {
+    window.open(
+      "https://mahatejshvi-vareny-swami-portfolio.vercel.app/",
+      "_blank",
+      "noopener,noreferrer",
+    );
+  };
+
   // ── REFS ─────────────────────────────────────────────────────────────────
   // We use refs instead of getElementById so this component is self-contained
   // and works correctly even if Next.js renders multiple instances.
@@ -77,6 +89,8 @@ export default function HeroSection() {
   const roadRef = useRef(null); // The dark horizontal road strip
   const carRef = useRef(null); // The car image
   const trailRef = useRef(null); // The lime-green trail bar
+  const hireBtnRef = useRef(null); // CTA: Hire Me
+  const portfolioBtnRef = useRef(null); // CTA: See Portfolio
   const lettersRef = useRef([]); // Array of headline letter spans
   const statCardsRef = useRef([]); // Array of stat card divs
 
@@ -152,10 +166,10 @@ export default function HeroSection() {
       const carRect = carRef.current?.getBoundingClientRect();
       const currentRoadWidth = roadRect?.width ?? window.innerWidth;
       const currentCarWidth =
-        carRect?.width ?? Math.min(240, currentRoadWidth * 0.24);
+        carRect?.width ?? Math.min(520, currentRoadWidth * 0.34);
 
       // Keep travel non-negative in case the car gets very large on small screens.
-      const endX = Math.max(0, currentRoadWidth - currentCarWidth - 12);
+      const endX = Math.max(0, currentRoadWidth - currentCarWidth - 16);
 
       return { currentCarWidth, endX };
     };
@@ -237,6 +251,34 @@ export default function HeroSection() {
           duration: 1,
         },
         0, // same start position in timeline as the car
+      );
+
+      // ── CTA buttons reveal ───────────────────────────────────────────────
+      // Keep each CTA in a different zone and reveal them with scroll.
+      scrollTL.fromTo(
+        hireBtnRef.current,
+        { opacity: 0, y: 24, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          ease: "none",
+          duration: 0.28,
+        },
+        0.18,
+      );
+
+      scrollTL.fromTo(
+        portfolioBtnRef.current,
+        { opacity: 0, y: 24, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          ease: "none",
+          duration: 0.28,
+        },
+        0.34,
       );
 
       // ── Headline letter reveal ────────────────────────────────────────────
@@ -322,7 +364,16 @@ export default function HeroSection() {
       <div
         ref={trackRef}
         className="sticky top-0 w-full overflow-hidden"
-        style={{ height: "100vh", background: "#0a0a0a" }}
+        style={{
+          height: "100vh",
+          background: `
+            radial-gradient(circle at 12% 18%, rgba(118, 255, 99, 0.24) 0%, rgba(118, 255, 99, 0) 36%),
+            radial-gradient(circle at 82% 18%, rgba(81, 222, 255, 0.27) 0%, rgba(81, 222, 255, 0) 40%),
+            radial-gradient(circle at 18% 82%, rgba(255, 147, 72, 0.24) 0%, rgba(255, 147, 72, 0) 34%),
+            radial-gradient(circle at 82% 80%, rgba(255, 98, 214, 0.25) 0%, rgba(255, 98, 214, 0) 36%),
+            linear-gradient(145deg, #060a18 0%, #121c3b 48%, #1a1433 100%)
+          `,
+        }}
       >
         {/* ── BACKGROUND GRID (decorative, pure CSS) ── */}
         <div
@@ -330,10 +381,27 @@ export default function HeroSection() {
           className="absolute inset-0 pointer-events-none"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
+              linear-gradient(rgba(118,255,99,0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(81,222,255,0.08) 1px, transparent 1px)
             `,
             backgroundSize: "60px 60px",
+            opacity: 0.62,
+          }}
+        />
+
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `
+              radial-gradient(circle at 8% 68%, rgba(255, 147, 72, 0.38) 0%, rgba(255, 147, 72, 0) 30%),
+              radial-gradient(circle at 90% 70%, rgba(255, 98, 214, 0.34) 0%, rgba(255, 98, 214, 0) 30%),
+              radial-gradient(circle at 50% 12%, rgba(81, 222, 255, 0.28) 0%, rgba(81, 222, 255, 0) 32%),
+              radial-gradient(circle at 50% 88%, rgba(118, 255, 99, 0.24) 0%, rgba(118, 255, 99, 0) 30%)
+            `,
+            mixBlendMode: "soft-light",
+            filter: "blur(14px)",
+            opacity: 0.84,
           }}
         />
 
@@ -351,8 +419,9 @@ export default function HeroSection() {
               fontWeight: 800,
               lineHeight: 0.95,
               textTransform: "uppercase",
-              color: "#f8fbff",
-              textShadow: "0 10px 30px rgba(83, 144, 255, 0.32)",
+              color: "#f7fbff",
+              textShadow:
+                "0 8px 26px rgba(56, 234, 255, 0.32), 0 0 20px rgba(255, 98, 214, 0.26)",
             }}
           >
             {HEADLINE.map((char, i) => (
@@ -372,6 +441,70 @@ export default function HeroSection() {
           </h1>
         </div>
 
+        <button
+          ref={hireBtnRef}
+          type="button"
+          onClick={openHireMail}
+          className="absolute top-[13%] left-4 sm:left-8 md:left-[7%]"
+          style={{
+            opacity: 0,
+            zIndex: 26,
+            padding: "0.74rem 1.3rem",
+            borderRadius: "999px",
+            border: "1px solid rgba(255,255,255,0.42)",
+            background:
+              "linear-gradient(135deg, rgba(118,255,99,0.95) 0%, rgba(81,222,255,0.9) 100%)",
+            color: "#061225",
+            fontFamily: "var(--font-body)",
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            fontSize: "0.76rem",
+            boxShadow:
+              "0 14px 30px rgba(10,16,34,0.44), 0 0 20px rgba(81,222,255,0.35), inset 0 1px 0 rgba(255,255,255,0.45)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            cursor: "pointer",
+            willChange: "opacity, transform",
+          }}
+          title="Hire me"
+          aria-label="Hire me"
+        >
+          Hire Me
+        </button>
+
+        <button
+          ref={portfolioBtnRef}
+          type="button"
+          onClick={openPortfolio}
+          className="absolute bottom-[18%] right-4 sm:right-8 md:right-[8%]"
+          style={{
+            opacity: 0,
+            zIndex: 26,
+            padding: "0.74rem 1.3rem",
+            borderRadius: "999px",
+            border: "1px solid rgba(255,255,255,0.46)",
+            background:
+              "linear-gradient(135deg, rgba(255,98,214,0.95) 0%, rgba(255,147,72,0.92) 100%)",
+            color: "#fff7ff",
+            fontFamily: "var(--font-body)",
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            fontSize: "0.76rem",
+            boxShadow:
+              "0 14px 30px rgba(10,16,34,0.44), 0 0 20px rgba(255,98,214,0.34), inset 0 1px 0 rgba(255,255,255,0.35)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            cursor: "pointer",
+            willChange: "opacity, transform",
+          }}
+          title="See my portfolio"
+          aria-label="See my portfolio"
+        >
+          See My Portfolio
+        </button>
+
         {/* ── ROAD STRIP ── */}
         <div
           ref={roadRef}
@@ -381,7 +514,12 @@ export default function HeroSection() {
             transform: "translateY(-50%)",
             width: "100vw",
             height: "clamp(140px, 18vh, 220px)",
-            background: "var(--color-road)",
+            background:
+              "linear-gradient(180deg, #242648 0%, #191b35 46%, #241635 100%)",
+            borderTop: "1px solid rgba(81, 222, 255, 0.34)",
+            borderBottom: "1px solid rgba(255, 147, 72, 0.3)",
+            boxShadow:
+              "inset 0 20px 38px rgba(255,255,255,0.05), inset 0 -24px 44px rgba(0,0,0,0.3)",
             overflow: "visible",
           }}
         >
@@ -392,7 +530,8 @@ export default function HeroSection() {
             style={{
               height: "3px",
               background:
-                "repeating-linear-gradient(90deg, #333 0 40px, transparent 40px 80px)",
+                "repeating-linear-gradient(90deg, rgba(214,252,255,0.95) 0 40px, transparent 40px 78px)",
+              filter: "drop-shadow(0 0 10px rgba(81, 222, 255, 0.4))",
             }}
           />
 
@@ -403,9 +542,10 @@ export default function HeroSection() {
             style={{
               width: 0,
               background:
-                "linear-gradient(90deg, var(--color-trail) 0%, #a3f000 100%)",
+                "linear-gradient(90deg, #69ff55 0%, #53f1ff 48%, #ff62d6 100%)",
               zIndex: 1,
-              opacity: 0.85,
+              opacity: 0.9,
+              boxShadow: "0 0 36px rgba(83, 241, 255, 0.42)",
             }}
           />
 
@@ -422,14 +562,18 @@ export default function HeroSection() {
             ref={carRef}
             src="/car.png" // drop your car PNG into /public/car.png
             alt="Car"
+            onError={(e) => {
+              e.currentTarget.src = "/car.svg";
+            }}
             className="absolute top-1/2 left-0"
             style={{
-              transform: "translateY(-68%)",
-              height: "250%",
-              width: "auto",
+              transform: "translateY(-58%)",
+              width: "clamp(260px, 34vw, 520px)",
+              height: "auto",
               zIndex: 10,
               willChange: "transform", // tell browser this element will be transformed
-              filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.7))",
+              filter:
+                "drop-shadow(0 10px 28px rgba(0,0,0,0.58)) drop-shadow(0 0 20px rgba(81,222,255,0.18))",
             }}
           />
         </div>
@@ -446,30 +590,78 @@ export default function HeroSection() {
             className={`absolute ${stat.position}`}
             style={{
               opacity: 0, // hidden; revealed by scroll animation
-              background: stat.bg,
+              background: `radial-gradient(circle at 14% 12%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 42%), linear-gradient(145deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.07) 42%, rgba(0,0,0,0.12) 100%), ${stat.bg}`,
               color: stat.color,
-              borderRadius: "14px",
+              border: "1px solid rgba(255,255,255,0.34)",
+              borderRadius: "16px",
               padding: "1.4rem 1.8rem",
               minWidth: "180px",
-              boxShadow: "0 12px 40px rgba(0,0,0,0.4)",
-              backdropFilter: "blur(4px)",
+              boxShadow: `0 18px 44px rgba(0,0,0,0.36), 0 0 34px ${stat.bg}66, inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(0,0,0,0.16)`,
+              backdropFilter: "blur(9px) saturate(140%)",
+              WebkitBackdropFilter: "blur(9px) saturate(140%)",
+              overflow: "hidden",
               willChange: "opacity, transform",
               zIndex: 20,
             }}
           >
+            <div
+              aria-hidden
+              className="absolute top-0 left-0 h-[3px] w-full"
+              style={{
+                background: `linear-gradient(90deg, rgba(255,255,255,0.12) 0%, ${stat.bg} 45%, rgba(255,255,255,0.95) 100%)`,
+                opacity: 0.95,
+              }}
+            />
+            <div
+              aria-hidden
+              className="absolute -top-10 -right-8 w-24 h-24 rounded-full pointer-events-none"
+              style={{
+                background: stat.bg,
+                opacity: 0.28,
+                filter: "blur(20px)",
+              }}
+            />
             <span
               className="block font-bold"
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(2.5rem, 5vw, 3.8rem)",
                 lineHeight: 1,
+                letterSpacing: "0.03em",
+                color: "#071426",
+                display: "inline-block",
+                padding: "0.08em 0.26em 0.04em",
+                borderRadius: "10px",
+                border: "1px solid rgba(255,255,255,0.34)",
+                background:
+                  "linear-gradient(135deg, rgba(255,255,255,0.46) 0%, rgba(255,255,255,0.16) 100%)",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,0.5), 0 8px 18px rgba(0,0,0,0.16)",
+                textShadow: "0 2px 8px rgba(0,0,0,0.18)",
+                position: "relative",
+                zIndex: 2,
               }}
             >
               {stat.value}
             </span>
             <span
               className="block mt-1 font-medium text-sm tracking-wide"
-              style={{ fontFamily: "var(--font-body)", opacity: 0.75 }}
+              style={{
+                fontFamily: "var(--font-body)",
+                opacity: 0.92,
+                letterSpacing: "0.07em",
+                textTransform: "uppercase",
+                fontWeight: 600,
+                marginTop: "0.55rem",
+                padding: "0.34rem 0.56rem",
+                borderRadius: "10px",
+                background: "rgba(7,20,38,0.16)",
+                border: "1px solid rgba(7,20,38,0.26)",
+                color: "#0a1222",
+                lineHeight: 1.2,
+                position: "relative",
+                zIndex: 2,
+              }}
             >
               {stat.label}
             </span>
@@ -479,11 +671,15 @@ export default function HeroSection() {
         {/* ── SCROLL CUE ── */}
         <div
           className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          style={{ opacity: 0.35, zIndex: 30 }}
+          style={{ opacity: 0.58, zIndex: 30 }}
         >
           <span
             className="text-xs tracking-widest uppercase text-white"
-            style={{ fontFamily: "var(--font-body)" }}
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "#deefff",
+              textShadow: "0 0 12px rgba(81, 222, 255, 0.35)",
+            }}
           >
             Scroll
           </span>
