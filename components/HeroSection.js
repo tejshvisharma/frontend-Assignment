@@ -500,6 +500,8 @@ export default function HeroSection() {
             }}
           />
 
+          {/* GSAP directly animates this element, so using img keeps ref behavior predictable. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             ref={carRef}
             src="/car.png"

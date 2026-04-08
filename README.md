@@ -80,3 +80,23 @@ Open: http://localhost:3000
 - Car image works best as a transparent PNG (top view).
 - Animations are scoped and cleaned up on unmount for stability.
 - Scroll behavior has been tuned so initial load and refresh states remain consistent.
+
+## Hosting (Final Step)
+
+This project is ready to deploy on Vercel.
+
+1. Push your latest code to GitHub.
+2. Import the repository in Vercel.
+3. Keep the default settings:
+	- Framework: Next.js
+	- Build command: `npm run build`
+	- Output: Next.js default
+4. Deploy.
+
+Before deploying, run this once locally:
+
+```bash
+npm run build
+```
+
+If build succeeds, your hosting build should also succeed.
