@@ -54,6 +54,7 @@ export default function HeroSection() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
   const roadRef = useRef(null);
+  const carShellRef = useRef(null);
   const carRef = useRef(null);
   const trailRef = useRef(null);
   const hireBtnRef = useRef(null);
@@ -63,13 +64,18 @@ export default function HeroSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      const navEntry =
+        typeof window !== "undefined"
+          ? performance.getEntriesByType("navigation")?.[0]
+          : null;
+      const isReload = navEntry?.type === "reload";
       const isAtTopOnLoad =
         typeof window === "undefined" ? true : window.scrollY <= 4;
 
       // Keep headline letters hidden from the first animation frame.
       gsap.set(lettersRef.current, { opacity: 0 });
 
-      if (!isAtTopOnLoad) {
+      if (!isAtTopOnLoad || isReload) {
         // Avoid intro flicker when browser restores a scrolled position on refresh.
         gsap.set(roadRef.current, { yPercent: 0, opacity: 1 });
         return;
@@ -92,7 +98,7 @@ export default function HeroSection() {
 
     const getCarMetrics = () => {
       const roadRect = roadRef.current?.getBoundingClientRect();
-      const carRect = carRef.current?.getBoundingClientRect();
+      const carRect = carShellRef.current?.getBoundingClientRect();
       const currentRoadWidth = roadRect?.width ?? window.innerWidth;
       const currentCarWidth =
         carRect?.width ?? Math.min(520, currentRoadWidth * 0.34);
@@ -512,26 +518,27 @@ export default function HeroSection() {
           {/* GSAP directly animates this element, so using img keeps ref behavior predictable. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <div
-            ref={carRef}
+            ref={carShellRef}
             className="absolute top-1/2 left-0"
             style={{
               transform: "translateY(-58%)",
               width: "clamp(260px, 34vw, 520px)",
               zIndex: 10,
-              willChange: "transform",
               filter:
                 "drop-shadow(0 10px 28px rgba(0,0,0,0.58)) drop-shadow(0 0 20px rgba(81,222,255,0.18))",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/car.png"
-              alt="Car"
-              onError={(e) => {
-                e.currentTarget.src = "/car.svg";
-              }}
-              style={{ width: "100%", height: "auto", display: "block" }}
-            />
+            <div ref={carRef} style={{ willChange: "transform" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/car.png"
+                alt="Car"
+                onError={(e) => {
+                  e.currentTarget.src = "/car.svg";
+                }}
+                style={{ width: "100%", height: "auto", display: "block" }}
+              />
+            </div>
           </div>
         </div>
 
