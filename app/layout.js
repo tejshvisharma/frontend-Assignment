@@ -1,8 +1,9 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "ITZFIZZ – Scroll Animation Hero",
-  description: "Scroll-driven hero section built with GSAP + ScrollTrigger in Next.js",
+  title: "Mahatejshvi | Frontend Developer",
+  description:
+    "Scroll-Driven Hero Case Study built with Next.js, Tailwind CSS, and GSAP",
 };
 
 export default function RootLayout({ children }) {

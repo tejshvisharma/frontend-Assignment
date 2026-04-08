@@ -10,7 +10,7 @@ const STATS = [
     id: "stat1",
     value: "UI/FE",
     label: "CRAFTING CLEAN, USABLE INTERFACES",
-    bg: "#76ff63",
+    bg: "#9bf66f",
     color: "#09111f",
     position: "top-[8%] right-[32%]",
   },
@@ -18,7 +18,7 @@ const STATS = [
     id: "stat2",
     value: "TOOLS",
     label: "REACT NEXT TAILWIND GSAP",
-    bg: "#51deff",
+    bg: "#5ad6ff",
     color: "#09111f",
     position: "bottom-[8%] right-[38%]",
   },
@@ -26,25 +26,21 @@ const STATS = [
     id: "stat3",
     value: "10+",
     label: "REAL WORLD UI FLOWS SHIPPED",
-    bg: "#ff9348",
+    bg: "#ff9a53",
     color: "#09111f",
     position: "top-[8%] right-[10%]",
-  },
-  {
-    id: "stat4",
-    value: "OPEN",
-    label: "INTERNSHIP READY • UI FE ROLES",
-    bg: "#ff62d6",
-    color: "#09111f",
-    position: "bottom-[8%] right-[12%]",
   },
 ];
 
 const HEADLINE = "WHY HIRE ME ?".split("");
 
 export default function HeroSection() {
-  const openHireMail = () => {
-    window.location.href = "mailto:tejshvisharma27@gmail.com";
+  const openResume = () => {
+    window.open(
+      "https://mahatejshvi.tiiny.site/",
+      "_blank",
+      "noopener,noreferrer",
+    );
   };
 
   const openPortfolio = () => {
@@ -223,13 +219,14 @@ export default function HeroSection() {
       });
 
       const cardOffsets = [0.3, 0.45, 0.6, 0.75];
+      const cardStartY = [30, 30, 30, 0];
 
       statCardsRef.current.forEach((card, i) => {
         if (!card) return;
 
         gsap.fromTo(
           card,
-          { opacity: 0, y: 30, scale: 0.95 },
+          { opacity: 0, y: cardStartY[i], scale: 0.95 },
           {
             opacity: 1,
             y: 0,
@@ -268,8 +265,8 @@ export default function HeroSection() {
             radial-gradient(circle at 12% 18%, rgba(118, 255, 99, 0.24) 0%, rgba(118, 255, 99, 0) 36%),
             radial-gradient(circle at 82% 18%, rgba(81, 222, 255, 0.27) 0%, rgba(81, 222, 255, 0) 40%),
             radial-gradient(circle at 18% 82%, rgba(255, 147, 72, 0.24) 0%, rgba(255, 147, 72, 0) 34%),
-            radial-gradient(circle at 82% 80%, rgba(255, 98, 214, 0.25) 0%, rgba(255, 98, 214, 0) 36%),
-            linear-gradient(145deg, #060a18 0%, #121c3b 48%, #1a1433 100%)
+            radial-gradient(circle at 82% 80%, rgba(159, 199, 255, 0.2) 0%, rgba(159, 199, 255, 0) 36%),
+            linear-gradient(145deg, #060a18 0%, #121c3b 48%, #131d36 100%)
           `,
         }}
       >
@@ -292,15 +289,76 @@ export default function HeroSection() {
           style={{
             background: `
               radial-gradient(circle at 8% 68%, rgba(255, 147, 72, 0.38) 0%, rgba(255, 147, 72, 0) 30%),
-              radial-gradient(circle at 90% 70%, rgba(255, 98, 214, 0.34) 0%, rgba(255, 98, 214, 0) 30%),
+              radial-gradient(circle at 90% 70%, rgba(159, 199, 255, 0.3) 0%, rgba(159, 199, 255, 0) 30%),
               radial-gradient(circle at 50% 12%, rgba(81, 222, 255, 0.28) 0%, rgba(81, 222, 255, 0) 32%),
               radial-gradient(circle at 50% 88%, rgba(118, 255, 99, 0.24) 0%, rgba(118, 255, 99, 0) 30%)
             `,
             mixBlendMode: "soft-light",
-            filter: "blur(14px)",
-            opacity: 0.84,
+            filter: "blur(12px)",
+            opacity: 0.76,
           }}
         />
+
+        <div
+          className="absolute top-4 left-4 sm:left-8 md:left-[7%] flex items-center gap-3"
+          style={{ zIndex: 28 }}
+          aria-label="Brand logo"
+        >
+          <div
+            style={{
+              width: "2.2rem",
+              height: "2.2rem",
+              borderRadius: "10px",
+              border: "1px solid rgba(145, 227, 255, 0.55)",
+              background:
+                "linear-gradient(145deg, rgba(90,214,255,0.26) 0%, rgba(155,246,111,0.18) 100%)",
+              boxShadow:
+                "0 8px 18px rgba(8,18,35,0.42), inset 0 1px 0 rgba(255,255,255,0.28)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.1rem",
+                lineHeight: 1,
+                letterSpacing: "0.04em",
+                color: "#dff5ff",
+                textShadow: "0 0 10px rgba(90,214,255,0.35)",
+              }}
+            >
+              MV
+            </span>
+          </div>
+
+          <div className="leading-tight">
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "0.82rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: "#e8f6ff",
+                fontWeight: 600,
+              }}
+            >
+              Mahatejshvi Vareny Swami
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "0.64rem",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "rgba(214, 238, 255, 0.76)",
+              }}
+            >
+              Frontend Developer
+            </p>
+          </div>
+        </div>
 
         <div
           className="absolute top-[18%] left-0 w-full flex justify-center items-center"
@@ -317,7 +375,7 @@ export default function HeroSection() {
               textTransform: "uppercase",
               color: "#f7fbff",
               textShadow:
-                "0 8px 26px rgba(56, 234, 255, 0.32), 0 0 20px rgba(255, 98, 214, 0.26)",
+                "0 8px 26px rgba(56, 234, 255, 0.3), 0 0 20px rgba(255, 154, 83, 0.22)",
             }}
           >
             {HEADLINE.map((char, i) => (
@@ -340,7 +398,7 @@ export default function HeroSection() {
         <button
           ref={hireBtnRef}
           type="button"
-          onClick={openHireMail}
+          onClick={openResume}
           className="absolute top-[13%] left-4 sm:left-8 md:left-[7%]"
           style={{
             opacity: 0,
@@ -363,10 +421,10 @@ export default function HeroSection() {
             cursor: "pointer",
             willChange: "opacity, transform",
           }}
-          title="Hire me"
-          aria-label="Hire me"
+          title="See my resume"
+          aria-label="See my resume"
         >
-          Hire Me
+          See My Resume
         </button>
 
         <button
@@ -381,15 +439,15 @@ export default function HeroSection() {
             borderRadius: "999px",
             border: "1px solid rgba(255,255,255,0.46)",
             background:
-              "linear-gradient(135deg, rgba(255,98,214,0.95) 0%, rgba(255,147,72,0.92) 100%)",
-            color: "#fff7ff",
+              "linear-gradient(135deg, rgba(90,214,255,0.95) 0%, rgba(255,154,83,0.9) 100%)",
+            color: "#081a2f",
             fontFamily: "var(--font-body)",
             fontWeight: 700,
             letterSpacing: "0.06em",
             textTransform: "uppercase",
             fontSize: "0.76rem",
             boxShadow:
-              "0 14px 30px rgba(10,16,34,0.44), 0 0 20px rgba(255,98,214,0.34), inset 0 1px 0 rgba(255,255,255,0.35)",
+              "0 14px 30px rgba(10,16,34,0.44), 0 0 20px rgba(90,214,255,0.3), inset 0 1px 0 rgba(255,255,255,0.35)",
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
             cursor: "pointer",
@@ -435,7 +493,7 @@ export default function HeroSection() {
             style={{
               width: 0,
               background:
-                "linear-gradient(90deg, #69ff55 0%, #53f1ff 48%, #ff62d6 100%)",
+                "linear-gradient(90deg, #9bf66f 0%, #5ad6ff 50%, #ff9a53 100%)",
               zIndex: 1,
               opacity: 0.9,
               boxShadow: "0 0 36px rgba(83, 241, 255, 0.42)",
