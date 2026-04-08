@@ -88,9 +88,9 @@ This project is ready to deploy on Vercel.
 1. Push your latest code to GitHub.
 2. Import the repository in Vercel.
 3. Keep the default settings:
-	- Framework: Next.js
-	- Build command: `npm run build`
-	- Output: Next.js default
+   - Framework: Next.js
+   - Build command: `npm run build`
+   - Output: Next.js default
 4. Deploy.
 
 Before deploying, run this once locally:
