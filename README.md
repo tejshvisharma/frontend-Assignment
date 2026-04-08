@@ -1,198 +1,82 @@
-# ITZFIZZ – Scroll‑Driven Hero Section
+# Scroll-Driven Hero Landing Page
 
-A polished scroll animation hero built with **Next.js 14 · React 18 · Tailwind CSS · GSAP + ScrollTrigger**.
+This project is a custom landing page section I built to show frontend animation skills in a practical way.
 
----
+The hero is fully scroll-driven:
 
-## Quick Start
+- A car moves across the road as the user scrolls.
+- Headline letters reveal based on the car position.
+- Stat cards fade in at different points during the scroll.
 
-```bash
-npm install
-npm run dev
-# open http://localhost:3000
-```
+The goal was to create something that feels smooth, modern, and interactive without making the code hard to follow.
 
-> **Car image:** drop your car PNG into `public/car.png`.  
-> A top-view PNG with a transparent background works best (e.g. McLaren 720S).
+## What I Built
 
----
+- A pinned hero section that stays in view while scroll controls the animation.
+- A coordinated animation flow using GSAP and ScrollTrigger.
+- A letter-by-letter headline reveal tied to movement, not just a timed effect.
+- Animated cards that appear progressively during the scroll journey.
+- A responsive layout that works across screen sizes and browsers.
+
+## Tech Stack
+
+- Next.js 14
+- React 18
+- Tailwind CSS
+- GSAP + ScrollTrigger
+
+## Why This Project Matters
+
+This project demonstrates that I can:
+
+- Build polished frontend experiences, not just static UI.
+- Connect animation state to user behavior (scroll position).
+- Handle real issues like refresh state consistency and cross-browser behavior.
+- Keep motion performance-friendly by using transform-based animation.
+
+## How It Works (Simple Explanation)
+
+1. The section height is larger than the screen, so scrolling creates animation time.
+2. The hero area is pinned while the page scrolls through that section.
+3. Scroll progress moves the car from left to right.
+4. As the car reaches each letter position, that letter becomes visible.
+5. Cards fade in at different scroll ranges to tell a visual story.
 
 ## Project Structure
 
-```
-itzfizz-hero/
+```text
+files/
 ├── app/
-│   ├── globals.css        ← global tokens, Google Fonts import, Tailwind layers
-│   ├── layout.js          ← root Next.js layout (metadata, body)
-│   └── page.js            ← root page – just renders HeroSection
+│   ├── globals.css
+│   ├── layout.js
+│   └── page.js
 ├── components/
-│   └── HeroSection.js     ← all animation logic lives here
+│   └── HeroSection.js
 ├── public/
-│   └── car.png            ← add your car image here
+│   └── car.png
 ├── tailwind.config.js
 ├── next.config.js
 └── package.json
 ```
 
----
+## Run Locally
 
-## How the Hero Works
-
-### 1. Layout
-
-The section is **200vh tall** but only **100vh is visible** at a time. This "extra" height is the *scroll budget* — the distance the user scrolls to drive all the animations. The inner `.track` div is pinned by GSAP so it stays in the viewport while the user scrolls.
-
-```
-Viewport (100vh)
-┌──────────────────────────────┐
-│  Headline (letters)          │ ← GSAP stagger on load + car reveal on scroll
-│                              │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━ │ ← Road strip (200px tall)
-│  🟢🟢🟢🟢🟢🟢🟢🟢🟢🚗      │   trail (green) + car moves left→right
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━ │
-│                              │
-│  [58%] [90%] ...             │ ← Stat cards fade in during scroll
-└──────────────────────────────┘
+```bash
+npm install
+npm run dev
 ```
 
-### 2. Intro Animation (page load)
+Open: http://localhost:3000
 
-```js
-// gsap.timeline() chains animations sequentially
-const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+## Customization
 
-tl.fromTo(road, { yPercent: 100 }, { yPercent: 0 });   // road slides up
-tl.fromTo(letters, { opacity:0, y:60 }, { opacity:1, y:0, stagger:0.04 }); // letters cascade
-```
+- Headline text: update the `HEADLINE` string in `components/HeroSection.js`
+- Stat card content: edit the `STATS` array in `components/HeroSection.js`
+- Theme colors and fonts: edit `app/globals.css`
+- Car asset: replace `public/car.png`
 
-- `fromTo()` explicitly sets both start and end states – safer than `from()` alone.
-- `stagger: 0.04` staggers each letter's animation start by 40 ms.
-- `"-=0.5"` overlaps with the previous animation for a connected feel.
+## Notes
 
-### 3. Scroll Animation (core feature)
-
-```js
-gsap.timeline({
-  scrollTrigger: {
-    trigger: sectionRef,
-    start: "top top",    // start when section hits viewport top
-    end: "bottom top",   // end when section bottom leaves viewport top
-    scrub: 1.5,          // 1.5 s smoothing lag (car glides, not snaps)
-    pin: trackRef,       // pin the visual container while scrolling
-  }
-})
-.to(car, { x: endX, ease: "none" })      // move car right
-.to(trail, { width: endX + carW/2 })     // grow trail to car's midpoint
-```
-
-#### Key ScrollTrigger props explained
-
-| Prop | What it does |
-|------|-------------|
-| `trigger` | Element whose scroll position drives the animation |
-| `start` | When to begin – format is `"elementEdge viewportEdge"` |
-| `end` | When to finish – same format |
-| `scrub` | Ties animation progress to scroll progress. `true` = instant, number = seconds of lag |
-| `pin` | Pins an element in place while the scroll budget is consumed |
-| `anticipatePin` | Eliminates the jump when pinning on fast scroll |
-
-### 4. Letter Reveal via `onUpdate`
-
-```js
-ScrollTrigger.create({
-  onUpdate: () => {
-    const carX = gsap.getProperty(car, "x") + carWidth / 2;
-    letters.forEach(letter => {
-      letter.style.opacity = carX >= letter.getBoundingClientRect().left ? "1" : "0";
-    });
-  }
-});
-```
-
-`onUpdate` fires every frame while the user scrolls. We compare the car's current X position against each letter's position to toggle visibility – no heavy math, just a comparison.
-
-### 5. Performance
-
-| Technique | Why |
-|-----------|-----|
-| `transform: translateX` (GSAP `x`) | GPU-composited, zero layout cost |
-| `will-change: transform` | Signals the browser to promote element to its own layer |
-| `scrub` instead of `onScroll` events | GSAP batches updates; avoids raw scroll listeners |
-| `gsap.context()` | Scopes all GSAP animations; single `.revert()` cleans everything on unmount |
-
----
-
-## Suggested Git Commit History
-
-```
-feat(project): initialise Next.js 14 + Tailwind + GSAP boilerplate
-feat(hero): set up hero section layout with road strip and sticky track
-feat(hero): add headline letter spans and stat card components
-feat(hero): implement intro animation (road slide-up + letter stagger)
-feat(hero): add scroll-driven car movement with GSAP ScrollTrigger
-feat(hero): implement trail growth and letter reveal on scroll
-feat(hero): add stat card fade-in animations with staggered scroll offsets
-perf(hero): migrate animations to transform properties, add will-change hints
-style(hero): refine colour palette, add grid background and scroll cue
-docs(hero): add README with architecture explanation and GSAP prop glossary
-```
-
----
-
-## Customisation
-
-| What | Where | How |
-|------|-------|-----|
-| Headline text | `HeroSection.js` | Edit the `HEADLINE` string constant |
-| Stat cards | `HeroSection.js` | Edit the `STATS` array |
-| Colours | `globals.css` | Edit the CSS custom properties under `:root` |
-| Car image | `public/car.png` | Replace the file |
-| Animation feel | `HeroSection.js` | Adjust `scrub`, `ease`, and `stagger` values |
-
-
-
-git add -p package.json next.config.js jsconfig.json
-git commit -m "Initialize Next.js app skeleton"
-
-git add -p tailwind.config.js app/layout.js app/page.js app/globals.css
-git commit -m "Configure Tailwind and base layout"
-
-git add -p app/globals.css app/layout.js
-git commit -m "Add global theme tokens and fonts"
-
-git add -p components/HeroSection.js app/page.js
-git commit -m "Create HeroSection component shell"
-
-
-
-
-
-
-
-
-git add -p components/HeroSection.js public
-git commit -m "Add road scene and car asset"
-
-git add -p package.json components/HeroSection.js
-git commit -m "Add GSAP and ScrollTrigger setup"
-
-git add -p components/HeroSection.js
-git commit -m "Pin hero section on scroll"
-
-git add -p components/HeroSection.js
-git commit -m "Add hero intro animation timeline"
-
-git add -p components/HeroSection.js app/globals.css
-git commit -m "Add scroll-driven car motion effects"
-
-git add -p app/page.js app/globals.css
-git commit -m "Add about projects contact sections"
-
-git add -p components/HeroSection.js app/page.js app/globals.css
-git commit -m "Refine responsive layout and spacing"
-
-git add -p components/HeroSection.js app/globals.css
-git commit -m "Polish microinteractions and motion"
-
-git add README.md settings.json
-git commit -m "Add README and editor settings"
+- Car image works best as a transparent PNG (top view).
+- Animations are scoped and cleaned up on unmount for stability.
+- Scroll behavior has been tuned so initial load and refresh states remain consistent.
