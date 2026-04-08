@@ -63,10 +63,19 @@ export default function HeroSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+      const isAtTopOnLoad =
+        typeof window === "undefined" ? true : window.scrollY <= 4;
 
       // Keep headline letters hidden from the first animation frame.
       gsap.set(lettersRef.current, { opacity: 0 });
+
+      if (!isAtTopOnLoad) {
+        // Avoid intro flicker when browser restores a scrolled position on refresh.
+        gsap.set(roadRef.current, { yPercent: 0, opacity: 1 });
+        return;
+      }
+
+      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
 
       tl.fromTo(
         roadRef.current,
@@ -502,24 +511,28 @@ export default function HeroSection() {
 
           {/* GSAP directly animates this element, so using img keeps ref behavior predictable. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <div
             ref={carRef}
-            src="/car.png"
-            alt="Car"
-            onError={(e) => {
-              e.currentTarget.src = "/car.svg";
-            }}
             className="absolute top-1/2 left-0"
             style={{
               transform: "translateY(-58%)",
               width: "clamp(260px, 34vw, 520px)",
-              height: "auto",
               zIndex: 10,
               willChange: "transform",
               filter:
                 "drop-shadow(0 10px 28px rgba(0,0,0,0.58)) drop-shadow(0 0 20px rgba(81,222,255,0.18))",
             }}
-          />
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/car.png"
+              alt="Car"
+              onError={(e) => {
+                e.currentTarget.src = "/car.svg";
+              }}
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
+          </div>
         </div>
 
         {STATS.map((stat, i) => (
