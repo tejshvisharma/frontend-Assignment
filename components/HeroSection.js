@@ -35,20 +35,18 @@ const STATS = [
 const HEADLINE = "WHY HIRE ME ?".split("");
 
 export default function HeroSection() {
-  const openResume = () => {
-    window.open(
-      "https://mahatejshvi.tiiny.site/",
-      "_blank",
-      "noopener,noreferrer",
-    );
-  };
+  const RESUME_URL = "https://mahatejshvi.tiiny.site/";
+  const PORTFOLIO_URL =
+    "https://mahatejshvi-vareny-swami-portfolio.vercel.app/";
 
-  const openPortfolio = () => {
-    window.open(
-      "https://mahatejshvi-vareny-swami-portfolio.vercel.app/",
-      "_blank",
-      "noopener,noreferrer",
-    );
+  const openLink = (url) => (e) => {
+    // Keep native behavior for modifier/middle clicks.
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+      return;
+    }
+
+    e.preventDefault();
+    window.location.assign(url);
   };
 
   const sectionRef = useRef(null);
@@ -410,14 +408,14 @@ export default function HeroSection() {
           </h1>
         </div>
 
-        <button
+        <a
           ref={hireBtnRef}
-          type="button"
-          onClick={openResume}
+          href={RESUME_URL}
+          onClick={openLink(RESUME_URL)}
           className="absolute top-[13%] left-4 sm:left-8 md:left-[7%]"
           style={{
             opacity: 0,
-            zIndex: 26,
+            zIndex: 200,
             padding: "0.74rem 1.3rem",
             borderRadius: "999px",
             border: "1px solid rgba(255,255,255,0.42)",
@@ -434,22 +432,26 @@ export default function HeroSection() {
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
             cursor: "pointer",
+            pointerEvents: "auto",
             willChange: "opacity, transform",
+            display: "inline-block",
+            textDecoration: "none",
+            lineHeight: 1,
           }}
           title="See my resume"
           aria-label="See my resume"
         >
           See My Resume
-        </button>
+        </a>
 
-        <button
+        <a
           ref={portfolioBtnRef}
-          type="button"
-          onClick={openPortfolio}
+          href={PORTFOLIO_URL}
+          onClick={openLink(PORTFOLIO_URL)}
           className="absolute bottom-[18%] right-4 sm:right-8 md:right-[8%]"
           style={{
             opacity: 0,
-            zIndex: 26,
+            zIndex: 200,
             padding: "0.74rem 1.3rem",
             borderRadius: "999px",
             border: "1px solid rgba(255,255,255,0.46)",
@@ -466,13 +468,17 @@ export default function HeroSection() {
             backdropFilter: "blur(6px)",
             WebkitBackdropFilter: "blur(6px)",
             cursor: "pointer",
+            pointerEvents: "auto",
             willChange: "opacity, transform",
+            display: "inline-block",
+            textDecoration: "none",
+            lineHeight: 1,
           }}
           title="See my portfolio"
           aria-label="See my portfolio"
         >
           See My Portfolio
-        </button>
+        </a>
 
         <div
           ref={roadRef}
@@ -488,6 +494,7 @@ export default function HeroSection() {
             borderBottom: "1px solid rgba(255, 147, 72, 0.3)",
             boxShadow:
               "inset 0 20px 38px rgba(255,255,255,0.05), inset 0 -24px 44px rgba(0,0,0,0.3)",
+            pointerEvents: "none",
             overflow: "visible",
           }}
         >
